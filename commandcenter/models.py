@@ -8,4 +8,4 @@ class CustomUser(AbstractUser):
         return self.username
 
     class Meta:
-        app_label = 'api'
+        app_label = 'commandcenter'
