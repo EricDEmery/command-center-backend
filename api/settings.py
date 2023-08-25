@@ -89,7 +89,7 @@ INSTALLED_APPS = [
     'rest_framework.authtoken',
     'corsheaders',
     'commandcenter',
-    # 'api',
+
 ]
 
 X_FRAME_OPTIONS = "SAMEORIGIN"
@@ -154,6 +154,8 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+AUTH_USER_MODEL = "commandcenter.CustomUser"
+
 # Internationalization
 # https://docs.djangoproject.com/en/4.1/topics/i18n/
 
@@ -199,3 +201,4 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 STATIC_ROOT = "static"
 STATIC_URL = "/static/"
 STATICFILES_DIRS = []
+APPEND_SLASH=False

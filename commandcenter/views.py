@@ -1,4 +1,6 @@
 from django.shortcuts import render
+import requests
+import json
 from django.http import HttpResponse, JsonResponse
 from rest_framework import viewsets
 from rest_framework_simplejwt.views import TokenObtainPairView
@@ -13,14 +15,16 @@ from django.db.models import Sum
 class UserCreate(APIView):
     permission_classes = (permissions.AllowAny,)
     authentication_classes = ()
+    epic_id = ''
     def post(self, request, format='json'):
         serializer = CustomUserSerializer(data=request.data)
         if serializer.is_valid():
             user = serializer.save()
             if user:
-                json = serializer.data
-                return Response(json, status=status.HTTP_201_CREATED)
+                json_data = serializer.data
+                return Response(json_data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
 class UserDetail(generics.RetrieveAPIView):
     permission_classes = (permissions.IsAuthenticatedOrReadOnly,)
     queryset = CustomUser.objects.all()
@@ -48,3 +52,11 @@ def UserSearch(request):
         
     except requests.RequestException as e:
         return Response({'error': 'API request failed.', 'details': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+class PostViewSet(viewsets.ModelViewSet):
+    queryset = Post.objects.all()
+    serializer_class = PostSerializer
+
+    def perform_create(self, serializer):
+        serializer.save(author=self.request.user, epic_id=self.request.user.epic_id)  # Save Epic ID
+
