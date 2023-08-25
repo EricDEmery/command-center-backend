@@ -3,16 +3,16 @@ from rest_framework import serializers
 from .models import *
 
 class CustomUserSerializer(serializers.ModelSerializer):
-    email = serializers.EmailField(
-        required=True
-    )
+    email = serializers.EmailField(required=True)
     username = serializers.CharField()
     password = serializers.CharField(min_length=8, write_only=True)
-    
+    epic_id = serializers.CharField()  # Add the 'epic_id' field
+
     class Meta:
         model = CustomUser
-        fields = ('email', 'username', 'password', 'first_name', 'last_name')
+        fields = ('email', 'username', 'password', 'first_name', 'last_name', 'epic_id')  # Include 'epic_id' here
         extra_kwargs = {'password': {'write_only': True}}
+
     def create(self, validated_data):
         password = validated_data.pop('password', None)
         instance = self.Meta.model(**validated_data)
@@ -27,8 +27,13 @@ class CommentSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 class PostSerializer(serializers.ModelSerializer):
-    comments = CommentSerializer(many=True, read_only=True)
+    epic_id = serializers.CharField(source='author.epic_id', read_only=True)
 
     class Meta:
         model = Post
-        fields = '__all__'
+        fields = ['id', 'author', 'content', 'created_at', 'epic_id']
+
+    def create(self, validated_data):
+        validated_data['author'] = self.context['request'].user
+        validated_data['epic_id'] = self.context['request'].user.epic_id
+        return super().create(validated_data)
