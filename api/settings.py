@@ -88,7 +88,7 @@ INSTALLED_APPS = [
     'rest_framework',
     'rest_framework.authtoken',
     'corsheaders',
-    'commandcenter',
+    'app',
 
 ]
 
@@ -153,6 +153,8 @@ AUTH_PASSWORD_VALIDATORS = [
         'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
     },
 ]
+
+AUTH_USER_MODEL = "app.CustomUser"
 
 # Internationalization
 # https://docs.djangoproject.com/en/4.1/topics/i18n/
