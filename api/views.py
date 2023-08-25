@@ -1,4 +1,6 @@
 from django.shortcuts import render
+import requests
+import json
 from django.http import HttpResponse, JsonResponse
 from rest_framework import viewsets
 from rest_framework_simplejwt.views import TokenObtainPairView

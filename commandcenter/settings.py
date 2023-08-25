@@ -89,7 +89,7 @@ INSTALLED_APPS = [
     'rest_framework.authtoken',
     'corsheaders',
     'commandcenter',
-    # 'api',
+
 ]
 
 X_FRAME_OPTIONS = "SAMEORIGIN"
