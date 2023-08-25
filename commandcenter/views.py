@@ -50,3 +50,7 @@ def UserSearch(request):
         
     except requests.RequestException as e:
         return Response({'error': 'API request failed.', 'details': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+class PostViewSet(viewsets.ModelViewSet):
+    queryset = Post.objects.all()
+    serializer_class = PostSerializer

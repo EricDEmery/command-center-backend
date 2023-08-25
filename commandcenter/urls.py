@@ -4,7 +4,9 @@ from rest_framework import routers
 from commandcenter.views import *
 from commandcenter import views
 
+
 router = routers.DefaultRouter()
+router.register(r'posts', PostViewSet)
 
 urlpatterns = [
     path('', include(router.urls)),
