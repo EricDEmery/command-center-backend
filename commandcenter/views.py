@@ -11,6 +11,7 @@ from rest_framework.decorators import action
 from .models import *
 from .serializers import *
 from django.db.models import Sum
+from rest_framework import permissions
 
 class UserCreate(APIView):
     permission_classes = (permissions.AllowAny,)
