@@ -61,3 +61,4 @@ class PostViewSet(viewsets.ModelViewSet):
     def perform_create(self, serializer):
         serializer.save(author=self.request.user, epic_id=self.request.user.epic_id)  # Save Epic ID
 
+1
