@@ -11,7 +11,8 @@ from rest_framework.decorators import action
 from .models import *
 from .serializers import *
 from django.db.models import Sum
-from rest_framework import permissions
+from rest_framework.permissions import IsAuthenticated
+from rest_framework.decorators import api_view, permission_classes
 
 class UserCreate(APIView):
     permission_classes = (permissions.AllowAny,)
@@ -54,10 +55,23 @@ def UserSearch(request):
     except requests.RequestException as e:
         return Response({'error': 'API request failed.', 'details': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
+
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
+def create_post(request):
+    if request.method == 'POST':
+        user = request.user
+        serializer = PostSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save(author=request.user, epic_id=request.user.epic_id)
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
 class PostViewSet(viewsets.ModelViewSet):
     queryset = Post.objects.all()
     serializer_class = PostSerializer
-    # permission_classes = [permissions.IsAuthenticated]
+    permission_classes = [permissions.IsAuthenticated]
 
-    def perform_create(self, serializer):
-        serializer.save(author=self.request.user, epic_id=self.request.user.epic_id)  # Save Epic ID
+    # def perform_create(self, serializer):
+    #     serializer.save(author=self.request.user, epic_id=self.request.user.epic_id)  # Save Epic ID
