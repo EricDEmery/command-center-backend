@@ -57,8 +57,7 @@ def UserSearch(request):
 class PostViewSet(viewsets.ModelViewSet):
     queryset = Post.objects.all()
     serializer_class = PostSerializer
+    # permission_classes = [permissions.IsAuthenticated]
 
     def perform_create(self, serializer):
         serializer.save(author=self.request.user, epic_id=self.request.user.epic_id)  # Save Epic ID
-
-1

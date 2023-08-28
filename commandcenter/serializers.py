@@ -27,7 +27,7 @@ class CommentSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 class PostSerializer(serializers.ModelSerializer):
-    epic_id = serializers.CharField(source='author.epic_id', read_only=True)
+    epic_id = serializers.CharField(source='author.epic_id')
 
     class Meta:
         model = Post
