@@ -15,4 +15,5 @@ urlpatterns = [
     path('user/login/', jwt_views.TokenObtainPairView.as_view(), name='token_create'),
     path('token/refresh/', jwt_views.TokenRefreshView.as_view(), name='token_refresh'),
     path('search/', views.UserSearch),
+    path('posts/', PostViewSet.as_view)
 ]
